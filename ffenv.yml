@@ -1,0 +1,17 @@
+name: ffenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - click>=8.0.0
+  - pycryptodome>=3.15.0
+  - python-magic>=0.4.27
+  - hexdump>=3.3
+  - pytest>=7.0.0
+  - pip:
+    - click>=8.0.0
+    - pycryptodome>=3.15.0
+    - python-magic>=0.4.27
+    - hexdump>=3.3
