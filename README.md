@@ -38,6 +38,14 @@ conda activate ffenv
 pip install -e .
 ```
 
+## Supported Filesystems
+
+- **SquashFS**: Compressed read-only filesystem (common in routers)
+- **JFFS2**: Journaling Flash File System version 2
+- **ext2/3/4**: Extended filesystem family
+- **CramFS**: Compressed ROM filesystem
+- **UBIFS**: Unsorted Block Image File System
+
 ## Usage
 
 ### Extract Firmware
@@ -139,17 +147,7 @@ conda activate ffenv
 firmaforge tools
 ```
 
-## Supported Filesystems
-
-- **SquashFS**: Compressed read-only filesystem (common in routers)
-- **JFFS2**: Journaling Flash File System version 2
-- **ext2/3/4**: Extended filesystem family
-- **CramFS**: Compressed ROM filesystem
-- **UBIFS**: Unsorted Block Image File System
-
-## Examples
-
-### Complete Workflow Example
+## Complete Workflow Example
 
 ```bash
 # Activate the conda environment first
@@ -173,73 +171,3 @@ firmaforge build router_firmware_extracted modified_firmware.bin --original-firm
 # 5. Verify the new firmware
 firmaforge analyze modified_firmware.bin
 ```
-
-### Analysis Only
-
-```bash
-# Activate the conda environment first
-conda activate ffenv
-
-# Get detailed information about firmware
-firmaforge analyze firmware.bin --format json
-```
-
-## Development
-
-### Project Structure
-
-```
-firmaforge/
-├── firmaforge/
-│   ├── __init__.py
-│   ├── cli.py          # Command-line interface
-│   ├── detector.py     # Firmware detection
-│   ├── extractor.py    # Extraction engine
-│   ├── modifier.py     # File modification operations
-│   ├── repacker.py     # Filesystem repacking
-│   └── builder.py      # Advanced firmware building
-├── tests/
-│   ├── test_detector.py
-│   ├── test_extractor.py
-│   ├── test_modifier.py
-│   ├── test_repacker.py
-│   └── test_builder.py
-├── ffenv.yml           # Conda environment
-├── setup.py
-└── README.md
-```
-
-### Adding New Filesystem Support
-
-1. Add the filesystem type to `FirmwareType` enum in `detector.py`
-2. Add magic signature to `SIGNATURES` dictionary
-3. Implement extraction method in `extractor.py`
-4. Implement repacking method in `repacker.py`
-5. Update `get_filesystem_info()` and `get_repacking_info()` methods
-6. Add tests in the appropriate test files
-
-## License
-
-MIT License
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## Roadmap
-
-- [x] Firmware detection and analysis
-- [x] Basic extraction functionality
-- [x] File modification capabilities (insert, remove, replace)
-- [x] Firmware repacking
-- [x] Advanced firmware building with container support
-- [x] Checksum calculation and validation
-- [x] Filesystem validation
-- [ ] GUI interface
-- [ ] Batch processing
-- [ ] Advanced filesystem support (UBIFS repacking)
-- [ ] Firmware signing and verification
