@@ -6,6 +6,8 @@ A powerful firmware modification and analysis tool for routers, IoT devices, and
 
 - **Firmware Detection**: Automatically detects filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
 - **Extraction**: Extracts firmware filesystems to working directories
+- **File Modification**: Insert, remove, and replace files in extracted filesystems
+- **Repacking**: Rebuild modified filesystems into bootable firmware images
 - **Analysis**: Detailed firmware analysis without extraction
 - **CLI Interface**: Easy-to-use command-line interface
 
@@ -78,13 +80,67 @@ firmaforge analyze firmware.bin --format json
 firmaforge analyze firmware.bin --format yaml
 ```
 
+### File Modification
+
+```bash
+# Activate the conda environment first
+conda activate ffenv
+
+# Insert a new file into the filesystem
+firmaforge insert filesystem_dir new_binary /usr/bin/new_binary
+
+# Replace an existing file
+firmaforge replace filesystem_dir updated_busybox /bin/busybox
+
+# Remove a file
+firmaforge remove filesystem_dir /usr/bin/old_binary
+
+# List files in the filesystem
+firmaforge list-files filesystem_dir
+
+# Get information about a specific file
+firmaforge info filesystem_dir /bin/busybox
+```
+
+### Repacking
+
+```bash
+# Repack the modified filesystem
+firmaforge repack filesystem_dir modified_firmware.bin
+
+# Repack with specific filesystem type
+firmaforge repack filesystem_dir output.squashfs --filesystem-type squashfs
+
+# Validate filesystem before repacking
+firmaforge validate filesystem_dir
+```
+
+### Advanced Firmware Building
+
+```bash
+# Build complete firmware with container support
+firmaforge build filesystem_dir firmware.bin --original-firmware original.bin
+
+# Build with specific container format
+firmaforge build filesystem_dir firmware.trx --container-format trx
+
+# Build U-Boot image
+firmaforge build filesystem_dir firmware.uboot --container-format uboot
+
+# Extract metadata from original firmware
+firmaforge metadata original_firmware.bin
+
+# Show supported container formats
+firmaforge containers
+```
+
 ### Check Tools
 
 ```bash
 # Activate the conda environment first
 conda activate ffenv
 
-# Check which extraction tools are available
+# Check which extraction and repacking tools are available
 firmaforge tools
 ```
 
@@ -98,16 +154,29 @@ firmaforge tools
 
 ## Examples
 
-### Basic Extraction
+### Complete Workflow Example
 
 ```bash
 # Activate the conda environment first
 conda activate ffenv
 
-# Extract a router firmware
+# 1. Extract a router firmware
 firmaforge extract router_firmware.bin
-
 # This creates a directory called 'router_firmware_extracted' with all files
+
+# 2. Modify the filesystem
+firmaforge insert router_firmware_extracted new_busybox /bin/busybox
+firmaforge remove router_firmware_extracted /usr/bin/unwanted_tool
+firmaforge replace router_firmware_extracted updated_config /etc/config
+
+# 3. Validate the modifications
+firmaforge validate router_firmware_extracted
+
+# 4. Build complete firmware with container support
+firmaforge build router_firmware_extracted modified_firmware.bin --original-firmware router_firmware.bin
+
+# 5. Verify the new firmware
+firmaforge analyze modified_firmware.bin
 ```
 
 ### Analysis Only
@@ -130,8 +199,17 @@ firmaforge/
 │   ├── __init__.py
 │   ├── cli.py          # Command-line interface
 │   ├── detector.py     # Firmware detection
-│   └── extractor.py    # Extraction engine
-├── requirements.txt
+│   ├── extractor.py    # Extraction engine
+│   ├── modifier.py     # File modification operations
+│   ├── repacker.py     # Filesystem repacking
+│   └── builder.py      # Advanced firmware building
+├── tests/
+│   ├── test_detector.py
+│   ├── test_extractor.py
+│   ├── test_modifier.py
+│   ├── test_repacker.py
+│   └── test_builder.py
+├── ffenv.yml           # Conda environment
 ├── setup.py
 └── README.md
 ```
@@ -141,7 +219,9 @@ firmaforge/
 1. Add the filesystem type to `FirmwareType` enum in `detector.py`
 2. Add magic signature to `SIGNATURES` dictionary
 3. Implement extraction method in `extractor.py`
-4. Update `get_filesystem_info()` method
+4. Implement repacking method in `repacker.py`
+5. Update `get_filesystem_info()` and `get_repacking_info()` methods
+6. Add tests in the appropriate test files
 
 ## License
 
@@ -159,8 +239,12 @@ MIT License
 
 - [x] Firmware detection and analysis
 - [x] Basic extraction functionality
-- [ ] File modification capabilities
-- [ ] Firmware repacking
-- [ ] Checksum validation
+- [x] File modification capabilities (insert, remove, replace)
+- [x] Firmware repacking
+- [x] Advanced firmware building with container support
+- [x] Checksum calculation and validation
+- [x] Filesystem validation
 - [ ] GUI interface
 - [ ] Batch processing
+- [ ] Advanced filesystem support (UBIFS repacking)
+- [ ] Firmware signing and verification
