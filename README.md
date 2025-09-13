@@ -17,11 +17,6 @@ A powerful firmware modification and analysis tool for routers, IoT devices, and
 
 Install the required extraction tools:
 
-**macOS:**
-```bash
-brew install squashfs-tools jefferson p7zip e2fsprogs cramfsprogs ubi_reader
-```
-
 **Ubuntu/Debian:**
 ```bash
 sudo apt install squashfs-tools jefferson p7zip-full e2fsprogs cramfsprogs ubi-utils
