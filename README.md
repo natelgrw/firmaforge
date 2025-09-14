@@ -1,4 +1,4 @@
-# FirmaForge
+# FirmaForge: Firmware Modification & Analysis Toolkit
 
 A powerful firmware modification and analysis tool for routers, IoT devices, and embedded systems.
 
