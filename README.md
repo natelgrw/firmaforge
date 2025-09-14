@@ -28,7 +28,7 @@ git clone <repository-url>
 cd firmaforge
 
 # Run the installation script (creates conda environment)
-./install.sh
+./install_linux.sh
 
 # Or manually create conda environment
 conda env create -f ffenv.yml
