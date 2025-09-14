@@ -2,7 +2,7 @@
 
 A powerful firmware modification and analysis tool for routers, IoT devices, and embedded systems.
 
-## Features
+## ⚙️ Features
 
 - **Firmware Detection**: Automatically detects filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
 - **Extraction**: Extracts firmware filesystems to working directories
@@ -11,20 +11,19 @@ A powerful firmware modification and analysis tool for routers, IoT devices, and
 - **Analysis**: Detailed firmware analysis without extraction
 - **CLI Interface**: Easy-to-use command-line interface
 
-## Installation
+## 📁 Supported Filesystems
 
-### Prerequisites
+- **SquashFS**: Compressed read-only filesystem (common in routers)
+- **JFFS2**: Journaling Flash File System version 2
+- **ext2/3/4**: Extended filesystem family
+- **CramFS**: Compressed ROM filesystem
+- **UBIFS**: Unsorted Block Image File System
 
-Install the required extraction tools:
+## 📥 Installation
 
-**Ubuntu/Debian:**
 ```bash
 sudo apt install squashfs-tools jefferson p7zip-full e2fsprogs cramfsprogs ubi-utils
-```
 
-### Install FirmaForge
-
-```bash
 # Clone the repository
 git clone <repository-url>
 cd firmaforge
@@ -38,15 +37,7 @@ conda activate ffenv
 pip install -e .
 ```
 
-## Supported Filesystems
-
-- **SquashFS**: Compressed read-only filesystem (common in routers)
-- **JFFS2**: Journaling Flash File System version 2
-- **ext2/3/4**: Extended filesystem family
-- **CramFS**: Compressed ROM filesystem
-- **UBIFS**: Unsorted Block Image File System
-
-## Usage
+## 🚀 Usage
 
 ### Extract Firmware
 
@@ -147,7 +138,7 @@ conda activate ffenv
 firmaforge tools
 ```
 
-## Complete Workflow Example
+### Complete Workflow Example
 
 ```bash
 # Activate the conda environment first
