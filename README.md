@@ -1,5 +1,4 @@
-# FirmaForge: Firmware Modification & Analysis Toolkit
-
+# FirmaForge: A Firmware Reverse Engineering Toolkit
 A powerful firmware modification and analysis tool for routers, IoT devices, and embedded systems.
 
 ## ⚙️ Features
