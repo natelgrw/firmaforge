@@ -1,66 +1,139 @@
-# FirmaForge QEMU Emulator Module
+# QEMU Integration for FirmaForge
 
-This module provides QEMU-based emulation and dynamic analysis capabilities for FirmaForge, enabling firmware rehosting and real-time vulnerability discovery.
+This document describes FirmaForge's QEMU emulation capabilities, designed to address IGLOO's core challenge of automated rehosting and dynamic analysis of embedded firmware.
 
-- Automatic firmware architecture detection
-- Virtual hardware creation using QEMU emulation
-- Firmware execution in controlled virtual environments
-- Dynamic fuzzing during execution
-- Automatic crash detection and vulnerability discovery
-- Multi-architecture support (ARM, MIPS, x86, RISC-V, etc.)
+## 🎯 Overview
 
-## Supported Architectures
+FirmaForge now includes comprehensive QEMU integration that enables:
+- **Automated rehosting** of embedded firmware
+- **Multi-architecture emulation** (ARM, MIPS, x86, RISC-V)
+- **Dynamic fuzzing** with crash detection
+- **Real-time monitoring** and introspection
+- **Integration** with existing FirmaForge pipeline
 
-| Architecture | QEMU Command | Description |
-|-------------|--------------|-------------|
-| ARM | `qemu-system-arm` | ARM processors (common in IoT devices) |
-| MIPS | `qemu-system-mips` | MIPS processors (routers, embedded) |
-| x86_64 | `qemu-system-x86_64` | x86-64 processors |
-| AArch64 | `qemu-system-aarch64` | 64-bit ARM processors |
-| RISC-V | `qemu-system-riscv64` | RISC-V processors |
-| PowerPC | `qemu-system-ppc` | PowerPC processors |
-| SPARC | `qemu-system-sparc` | SPARC processors |
-| Alpha | `qemu-system-alpha` | Alpha processors |
-| S390X | `qemu-system-s390x` | IBM Z processors |
+### Supported Architectures
 
-## Core Components
+| Architecture | QEMU Command | Use Case |
+|--------------|--------------|----------|
+| **ARM** | `qemu-system-arm` | IoT devices, embedded systems |
+| **AArch64** | `qemu-system-aarch64` | Modern ARM64 devices |
+| **MIPS** | `qemu-system-mips` | Routers, network equipment |
+| **MIPSel** | `qemu-system-mipsel` | Little-endian MIPS devices |
+| **MIPS64** | `qemu-system-mips64` | 64-bit MIPS systems |
+| **x86** | `qemu-system-i386` | Legacy embedded x86 |
+| **x86_64** | `qemu-system-x86_64` | Modern x86_64 systems |
+| **RISC-V32** | `qemu-system-riscv32` | RISC-V 32-bit systems |
+| **RISC-V64** | `qemu-system-riscv64` | RISC-V 64-bit systems |
 
-### QEMUEmulator Class (`qemu_runner.py`)
+## 🚀 Usage
 
-The main class that handles QEMU emulation operations:
+### Basic Emulation
+
+```bash
+# Emulate firmware with auto-detected architecture
+firmaforge emulator emulate firmware.bin
+
+# Specify architecture
+firmaforge emulator emulate firmware.bin --architecture arm
+
+# Enable verbose output
+firmaforge emulator emulate firmware.bin --verbose
+
+# Set memory and timeout
+firmaforge emulator emulate firmware.bin --memory 512M --timeout 60
+```
+
+### Dynamic Fuzzing
+
+```bash
+# Fuzz emulated firmware
+firmaforge emulator fuzz firmware.bin output_dir --iterations 100
+
+# Fuzz with specific architecture
+firmaforge emulator fuzz firmware.bin output_dir --architecture mips --iterations 50
+
+# Verbose fuzzing with custom timeout
+firmaforge emulator fuzz firmware.bin output_dir --iterations 200 --timeout 5 --verbose
+```
+
+### Analysis and Detection
+
+```bash
+# Analyze firmware for emulation compatibility
+firmaforge emulator analyze firmware.bin
+
+# List supported architectures
+firmaforge emulator architectures
+
+# JSON output for analysis
+firmaforge emulator analyze firmware.bin --format json
+```
+
+## 🔧 Installation
+
+### Prerequisites
+
+```bash
+# Install QEMU with multi-architecture support
+# Ubuntu/Debian
+sudo apt install qemu-system qemu-user
+
+# macOS
+brew install qemu
+
+# Verify installation
+qemu-system-x86_64 --version
+```
+
+### Python Dependencies
+
+```bash
+# Install FirmaForge with QEMU support
+pip install -e .
+
+# Additional dependencies are automatically installed
+```
+
+## 📋 Features
+
+### 1. Automated Architecture Detection
 
 ```python
 from firmaforge.emulator.qemu_runner import QEMUEmulator
 
 emulator = QEMUEmulator()
-
-# Detect firmware architecture
-arch_info = emulator.detect_architecture('firmware.bin')
-
-# Create emulation environment
-config = emulator.create_emulation_environment('firmware.bin')
-
-# Run emulation
-result = emulator.emulate_firmware('firmware.bin', timeout=60)
-
-# Fuzz during emulation
-fuzz_result = emulator.fuzz_emulated_firmware('firmware.bin', 'output_dir', iterations=50)
+architecture = emulator.detect_architecture('firmware.bin')
+print(f"Detected architecture: {architecture}")
 ```
 
-### CLI Interface (`cli.py`)
+### 2. Emulation Environment Setup
 
-Command-line interface for emulation operations:
+```python
+config = emulator.create_emulation_environment('firmware.bin')
+print(f"QEMU command: {config['qemu_command']}")
+print(f"Memory: {config['memory_size']}")
+print(f"Network: {config['network_enabled']}")
+```
 
-```bash
-# Analyze firmware for emulation
-firmaforge emulator analyze firmware.bin
+### 3. Dynamic Fuzzing
 
-# Emulate firmware
-firmaforge emulator emulate firmware.bin --architecture arm --memory 512M
+```python
+# Generate fuzz inputs
+fuzz_inputs = [generate_random_data() for _ in range(100)]
 
-# Fuzz during emulation
-firmaforge emulator fuzz firmware.bin output_dir --iterations 100
+# Run fuzzing
+results = emulator.fuzz_emulated_firmware(config, fuzz_inputs, 100)
+print(f"Crashes found: {results['crashes_found']}")
+print(f"Crash rate: {results['crash_rate']:.2%}")
+```
 
-# List supported architectures
-firmaforge emulator architectures
+### 4. Crash Analysis
+
+```python
+# Analyze emulation results
+crashes = results['crashes']
+for crash in crashes:
+    print(f"Crash type: {crash['type']}")
+    print(f"Severity: {crash['severity']}")
+    print(f"Timestamp: {crash['timestamp']}")
 ```
