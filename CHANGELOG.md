@@ -1,7 +1,9 @@
 # Changelog
 
 Version 0.2.0
+
 Date Released: 01/15/2025
+
 - QEMU emulation and dynamic analysis capabilities
 - Multi-architecture support (ARM, MIPS, x86, RISC-V, PowerPC, SPARC, Alpha, S390X)
 - Dynamic fuzzing during firmware execution
@@ -15,7 +17,9 @@ Date Released: 01/15/2025
 - Updated installation requirements to include QEMU
 
 Version 0.1.0
+
 Date Released: 01/01/2025
+
 - Initial release of FirmaForge
 - Firmware detection and analysis capabilities
 - Support for multiple filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
