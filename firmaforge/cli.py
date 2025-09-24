@@ -752,3 +752,109 @@ def tools():
 
 if __name__ == '__main__':
     main()
+
+
+@main.command()
+@click.argument('firmware_path', type=click.Path(exists=True))
+@click.argument('output_dir', type=click.Path())
+@click.option('--fuzz-type', type=click.Choice(['random', 'bitflip', 'magic', 'boundary']), 
+              default='random', help='Type of fuzzing to perform')
+@click.option('--iterations', '-i', default=100, help='Number of fuzzing iterations')
+@click.option('--verbose', '-v', is_flag=True, help='Verbose output')
+def fuzz(firmware_path, output_dir, fuzz_type, iterations, verbose):
+    """
+    Fuzz a firmware file for vulnerability discovery
+    
+    FIRMWARE_PATH: Path to firmware file to fuzz
+    OUTPUT_DIR: Directory to save fuzzed files
+    """
+    from .fuzzer import FirmwareFuzzer
+    
+    if verbose:
+        click.echo(f"Fuzzing {firmware_path} with {fuzz_type} fuzzing...")
+    
+    fuzzer = FirmwareFuzzer()
+    
+    try:
+        result = fuzzer.fuzz_firmware_file(firmware_path, output_dir, fuzz_type, iterations)
+        
+        if result['success']:
+            click.echo(f"✅ Fuzzing complete!")
+            click.echo(f"   Fuzzed files: {len(result['fuzzed_files'])}")
+            click.echo(f"   Crashes found: {len(result['crashes'])}")
+            click.echo(f"   Unique crashes: {result['unique_crashes']}")
+            
+            if verbose and result['crashes']:
+                click.echo("\n🚨 Crashes found:")
+                for crash in result['crashes'][:5]:  # Show first 5 crashes
+                    click.echo(f"   - {crash['file_path']}: {crash['crash_type']}")
+        else:
+            click.echo(f"❌ Fuzzing failed: {result['error']}")
+            sys.exit(1)
+    
+    except Exception as e:
+        click.echo(f"❌ Error: {str(e)}")
+        if verbose:
+            import traceback
+            traceback.print_exc()
+        sys.exit(1)
+
+
+@main.command()
+@click.argument('filesystem_path', type=click.Path(exists=True, file_okay=False))
+@click.argument('output_dir', type=click.Path())
+@click.option('--fuzz-type', type=click.Choice(['file_content', 'permissions', 'names']), 
+              default='file_content', help='Type of filesystem fuzzing')
+@click.option('--iterations', '-i', default=50, help='Number of fuzzing iterations')
+@click.option('--verbose', '-v', is_flag=True, help='Verbose output')
+def fuzz_fs(filesystem_path, output_dir, fuzz_type, iterations, verbose):
+    """
+    Fuzz an extracted filesystem for vulnerability discovery
+    
+    FILESYSTEM_PATH: Path to extracted filesystem directory
+    OUTPUT_DIR: Directory to save fuzzed filesystems
+    """
+    from .fuzzer import FirmwareFuzzer
+    
+    if verbose:
+        click.echo(f"Fuzzing filesystem {filesystem_path} with {fuzz_type} fuzzing...")
+    
+    fuzzer = FirmwareFuzzer()
+    
+    try:
+        result = fuzzer.fuzz_filesystem(filesystem_path, output_dir, fuzz_type, iterations)
+        
+        if result['success']:
+            click.echo(f"✅ Filesystem fuzzing complete!")
+            click.echo(f"   Fuzzed filesystems: {iterations}")
+            click.echo(f"   Crashes found: {len(result['crashes'])}")
+            
+            if verbose and result['crashes']:
+                click.echo("\n🚨 Filesystem crashes found:")
+                for crash in result['crashes'][:5]:
+                    click.echo(f"   - {crash['fs_dir']}: {', '.join(crash['issues'])}")
+        else:
+            click.echo(f"❌ Fuzzing failed: {result['error']}")
+            sys.exit(1)
+    
+    except Exception as e:
+        click.echo(f"❌ Error: {str(e)}")
+        if verbose:
+            import traceback
+            traceback.print_exc()
+        sys.exit(1)
+
+
+@main.command()
+def fuzz_stats():
+    """Show fuzzing statistics"""
+    from .fuzzer import FirmwareFuzzer
+    
+    fuzzer = FirmwareFuzzer()
+    stats = fuzzer.get_fuzzing_stats()
+    
+    click.echo("📊 Fuzzing Statistics:")
+    click.echo(f"   Total fuzz operations: {stats['total_fuzz_count']}")
+    click.echo(f"   Crashes found: {stats['crashes_found']}")
+    click.echo(f"   Unique crashes: {stats['unique_crashes']}")
+    click.echo(f"   Crash rate: {stats['crash_rate']:.2%}")

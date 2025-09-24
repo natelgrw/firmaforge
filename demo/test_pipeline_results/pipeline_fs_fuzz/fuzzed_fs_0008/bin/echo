@@ -1,0 +1,2 @@
+#!/bin/sh
+echo 'Security patch applied'

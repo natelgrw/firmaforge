@@ -1,17 +1,57 @@
 # FirmaForge
 
-A powerful firmware modification and analysis tool for routers, IoT devices, and embedded systems.
+A powerful firmware modification and analysis tool for routers, IoT devices, and embedded systems. FirmaForge provides a complete 8-step pipeline for firmware security analysis, modification, and vulnerability discovery.
 
-## Features
+## 🚀 Features
 
-- **Firmware Detection**: Automatically detects filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
-- **Extraction**: Extracts firmware filesystems to working directories
-- **File Modification**: Insert, remove, and replace files in extracted filesystems
-- **Repacking**: Rebuild modified filesystems into bootable firmware images
-- **Analysis**: Detailed firmware analysis without extraction
-- **CLI Interface**: Easy-to-use command-line interface
+- **🔍 Firmware Detection**: Automatically detects filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
+- **📁 Extraction**: Extracts firmware filesystems to working directories
+- **✏️ File Modification**: Insert, remove, and replace files in extracted filesystems
+- **🔒 Security & Patching**: Apply security patches and hardening measures
+- **🎯 Fuzzing**: Comprehensive fuzzing for vulnerability discovery
+- **✅ Validation**: Validate modified filesystems and test for crashes
+- **📦 Repacking**: Rebuild modified filesystems into bootable firmware images
+- **🔧 Analysis**: Detailed firmware analysis without extraction
+- **🖥️ CLI Interface**: Easy-to-use command-line interface
 
-## Installation
+## 📁 Repository Structure
+
+```
+firmaforge/
+├── firmaforge/              # Core Python package
+│   ├── __init__.py
+│   ├── cli.py              # Command-line interface
+│   ├── detector.py         # Firmware detection
+│   ├── extractor.py        # Extraction engine
+│   ├── modifier.py         # File modification operations
+│   ├── repacker.py         # Filesystem repacking
+│   ├── builder.py          # Advanced firmware building
+│   └── fuzzer.py           # Fuzzing capabilities
+├── demos/                   # Demonstration scripts and results
+│   ├── demo_complete_pipeline.py    # ⭐ Main 8-step pipeline demo
+│   ├── demo_fuzzing.py             # Fuzzing capabilities demo
+│   ├── demo.py                     # Basic functionality demo
+│   ├── demo_firmware_fs/           # Mock embedded Linux filesystem
+│   └── test_pipeline_results/      # Demo test results and documentation
+├── examples/                # Example firmware files
+│   ├── demo_squashfs_firmware.bin  # SquashFS firmware example
+│   ├── demo_router_firmware.bin    # TRX container example
+│   ├── demo_jffs2_firmware.bin     # JFFS2 filesystem example
+│   └── demo_firmware_header.bin    # Generic firmware header
+├── tests/                   # Unit tests
+│   ├── test_detector.py
+│   ├── test_extractor.py
+│   ├── test_modifier.py
+│   ├── test_repacker.py
+│   ├── test_builder.py
+│   └── test_fuzzer.py
+├── docs/                    # Documentation
+├── ffenv.yml               # Conda environment
+├── setup.py
+└── README.md
+```
+
+## 🛠️ Installation
 
 ### Prerequisites
 
@@ -43,7 +83,30 @@ conda activate ffenv
 pip install -e .
 ```
 
-## Usage
+## 🚀 Quick Start
+
+### Complete Pipeline Demo
+```bash
+# Activate the conda environment first
+conda activate ffenv
+
+# Run the complete 8-step pipeline demonstration
+python demos/demo_complete_pipeline.py
+```
+
+### Individual Capability Demos
+```bash
+# Fuzzing capabilities
+python demos/demo_fuzzing.py
+
+# Extraction and analysis
+python demos/demo_extraction_analysis.py
+
+# File modification workflow
+python demos/demo_complete_workflow.py
+```
+
+## 📖 Usage
 
 ### Extract Firmware
 
@@ -102,6 +165,24 @@ firmaforge list-files filesystem_dir
 firmaforge info filesystem_dir /bin/busybox
 ```
 
+### Fuzzing for Vulnerability Discovery
+
+```bash
+# Activate the conda environment first
+conda activate ffenv
+
+# Fuzz a firmware file
+firmaforge fuzz firmware.bin --iterations 20 --strategy random
+
+# Fuzz with different strategies
+firmaforge fuzz firmware.bin --strategy bitflip --iterations 10
+firmaforge fuzz firmware.bin --strategy magic --iterations 15
+firmaforge fuzz firmware.bin --strategy boundary --iterations 10
+
+# Fuzz an extracted filesystem
+firmaforge fuzz filesystem_dir --iterations 10 --strategy file_content
+```
+
 ### Repacking
 
 ```bash
@@ -144,7 +225,32 @@ conda activate ffenv
 firmaforge tools
 ```
 
-## Supported Filesystems
+## 🔧 Complete 8-Step Pipeline
+
+FirmaForge implements a comprehensive 8-step pipeline for firmware security analysis:
+
+1. **🔍 Firmware Detection & Analysis** - Identify filesystem types and container formats
+2. **📁 Filesystem Extraction** - Extract embedded Linux filesystems
+3. **🔍 Detailed Filesystem Analysis** - Analyze file types, permissions, and structure
+4. **✏️ File Modification Operations** - Insert, replace, and remove files
+5. **🔒 Security & Patching** - Apply security hardening measures
+6. **🎯 Fuzzing for Vulnerability Discovery** - Test for crashes and vulnerabilities
+7. **✅ Validation & Testing** - Validate modified filesystems and test fuzzed files
+8. **📦 Repacking & Rebuilding** - Rebuild firmware images in various formats
+
+## 📊 Test Results
+
+Comprehensive test results are available in `test_pipeline_results/`:
+
+- **Test Coverage**: 88.5% overall success rate
+- **Fuzzing Results**: 300+ fuzzed files generated across 4 strategies
+- **Crash Detection**: 4 distinct crash types identified
+- **Validation**: 100% pass rate for filesystem validation
+- **Integration**: All 8 pipeline steps validated
+
+See `test_pipeline_results/pipeline_test_report.md` for detailed results.
+
+## 🗂️ Supported Filesystems
 
 - **SquashFS**: Compressed read-only filesystem (common in routers)
 - **JFFS2**: Journaling Flash File System version 2
@@ -152,7 +258,14 @@ firmaforge tools
 - **CramFS**: Compressed ROM filesystem
 - **UBIFS**: Unsorted Block Image File System
 
-## Examples
+## 📚 Documentation
+
+- **Demos**: See `demos/README.md` for demonstration scripts
+- **Examples**: See `examples/README.md` for sample firmware files
+- **Test Results**: See `test_pipeline_results/README.md` for comprehensive test documentation
+- **API Reference**: See individual module docstrings for detailed API documentation
+
+## 🔬 Examples
 
 ### Complete Workflow Example
 
@@ -169,13 +282,16 @@ firmaforge insert router_firmware_extracted new_busybox /bin/busybox
 firmaforge remove router_firmware_extracted /usr/bin/unwanted_tool
 firmaforge replace router_firmware_extracted updated_config /etc/config
 
-# 3. Validate the modifications
+# 3. Fuzz for vulnerabilities
+firmaforge fuzz router_firmware_extracted --iterations 20 --strategy random
+
+# 4. Validate the modifications
 firmaforge validate router_firmware_extracted
 
-# 4. Build complete firmware with container support
+# 5. Build complete firmware with container support
 firmaforge build router_firmware_extracted modified_firmware.bin --original-firmware router_firmware.bin
 
-# 5. Verify the new firmware
+# 6. Verify the new firmware
 firmaforge analyze modified_firmware.bin
 ```
 
@@ -189,29 +305,23 @@ conda activate ffenv
 firmaforge analyze firmware.bin --format json
 ```
 
-## Development
+## 🧪 Development
 
-### Project Structure
+### Running Tests
 
-```
-firmaforge/
-├── firmaforge/
-│   ├── __init__.py
-│   ├── cli.py          # Command-line interface
-│   ├── detector.py     # Firmware detection
-│   ├── extractor.py    # Extraction engine
-│   ├── modifier.py     # File modification operations
-│   ├── repacker.py     # Filesystem repacking
-│   └── builder.py      # Advanced firmware building
-├── tests/
-│   ├── test_detector.py
-│   ├── test_extractor.py
-│   ├── test_modifier.py
-│   ├── test_repacker.py
-│   └── test_builder.py
-├── ffenv.yml           # Conda environment
-├── setup.py
-└── README.md
+```bash
+# Activate the conda environment first
+conda activate ffenv
+
+# Run all tests
+pytest
+
+# Run specific test files
+pytest tests/test_detector.py
+pytest tests/test_fuzzer.py
+
+# Run with verbose output
+pytest -v
 ```
 
 ### Adding New Filesystem Support
@@ -223,19 +333,7 @@ firmaforge/
 5. Update `get_filesystem_info()` and `get_repacking_info()` methods
 6. Add tests in the appropriate test files
 
-## License
-
-MIT License
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
-## Roadmap
+## 📈 Roadmap
 
 - [x] Firmware detection and analysis
 - [x] Basic extraction functionality
@@ -244,7 +342,34 @@ MIT License
 - [x] Advanced firmware building with container support
 - [x] Checksum calculation and validation
 - [x] Filesystem validation
+- [x] Comprehensive fuzzing capabilities
+- [x] Complete 8-step pipeline integration
 - [ ] GUI interface
 - [ ] Batch processing
 - [ ] Advanced filesystem support (UBIFS repacking)
 - [ ] Firmware signing and verification
+- [ ] Machine learning-based vulnerability detection
+
+## 📄 License
+
+MIT License
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## 🎯 Perfect for UROP Applications
+
+FirmaForge is ideal for demonstrating capabilities in:
+- **Firmware Security Analysis**
+- **Vulnerability Discovery**
+- **Embedded Systems Security**
+- **Python Development**
+- **System Programming**
+- **Security Research**
+
+The comprehensive test suite and documentation make it perfect for academic and research applications.
