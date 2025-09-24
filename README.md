@@ -43,7 +43,7 @@ Install FirmaForge:
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone https://github.com/natelgrw/firmaforge.git
 cd firmaforge
 
 # Create conda environment
