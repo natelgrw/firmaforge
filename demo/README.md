@@ -2,7 +2,7 @@
 
 This directory contains demonstration scripts that showcase FirmaForge's capabilities across different use cases and scenarios.
 
-### 1. `demo_complete_pipeline.py` - Main Demo
+### 1. `demo_complete_pipeline.py` 
 **Complete 8-step integrated pipeline demonstration**
 
 This demo showcases all of FirmaForge's capabilities in one cohesive workflow:
@@ -18,7 +18,7 @@ This demo showcases all of FirmaForge's capabilities in one cohesive workflow:
 
 **Usage**: `python demo_complete_pipeline.py`
 
-### 2. `demo_qemu_integration.py` - QEMU Demo
+### 2. `demo_qemu_integration.py` 
 **QEMU emulation and dynamic analysis demonstration**
 
 Shows FirmaForge's QEMU integration capabilities:
