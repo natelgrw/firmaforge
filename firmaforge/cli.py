@@ -12,6 +12,7 @@ from .extractor import FirmwareExtractor, ExtractionError
 from .modifier import FirmwareModifier, FileModificationError
 from .repacker import FirmwareRepacker, RepackingError
 from .builder import FirmwareBuilder, FirmwareBuilderError
+from .emulator.cli import emulator
 
 
 @click.group()
@@ -749,6 +750,9 @@ def tools():
         click.echo("  macOS: brew install squashfs-tools jefferson p7zip e2fsprogs cramfsprogs ubi_reader mtd-utils u-boot-tools")
         click.echo("  Ubuntu: sudo apt install squashfs-tools jefferson p7zip-full e2fsprogs cramfsprogs ubi-utils mtd-utils u-boot-tools")
 
+
+# Add emulator commands to main CLI
+main.add_command(emulator)
 
 if __name__ == '__main__':
     main()

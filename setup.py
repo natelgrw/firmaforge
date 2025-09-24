@@ -11,6 +11,7 @@ setup(
         "pycryptodome>=3.15.0",
         "python-magic>=0.4.27",
         "hexdump>=3.3",
+        "psutil>=5.8.0",  # For process monitoring
     ],
     entry_points={
         "console_scripts": [

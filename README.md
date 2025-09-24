@@ -1,20 +1,23 @@
 # FirmaForge
 
-A powerful firmware modification and analysis tool for routers, IoT devices, and embedded systems. FirmaForge provides a complete 8-step pipeline for firmware security analysis, modification, and vulnerability discovery.
+A firmware modification and analysis tool for routers, IoT devices, and embedded systems. FirmaForge provides a complete pipeline for firmware security analysis, modification, and vulnerability discovery, enhanced with QEMU emulation for dynamic analysis and rehosting.
 
-## 🚀 Features
+## Features
 
-- **🔍 Firmware Detection**: Automatically detects filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
-- **📁 Extraction**: Extracts firmware filesystems to working directories
-- **✏️ File Modification**: Insert, remove, and replace files in extracted filesystems
-- **🔒 Security & Patching**: Apply security patches and hardening measures
-- **🎯 Fuzzing**: Comprehensive fuzzing for vulnerability discovery
-- **✅ Validation**: Validate modified filesystems and test for crashes
-- **📦 Repacking**: Rebuild modified filesystems into bootable firmware images
-- **🔧 Analysis**: Detailed firmware analysis without extraction
-- **🖥️ CLI Interface**: Easy-to-use command-line interface
+- **Firmware Detection**: Automatically detects filesystem types (SquashFS, JFFS2, ext2/3/4, CramFS, UBIFS)
+- **Extraction**: Extracts firmware filesystems to working directories
+- **File Modification**: Insert, remove, and replace files in extracted filesystems
+- **Security & Patching**: Apply security patches and hardening measures
+- **Fuzzing**: Comprehensive fuzzing for vulnerability discovery
+- **Validation**: Validate modified filesystems and test for crashes
+- **Repacking**: Rebuild modified filesystems into bootable firmware images
+- **Analysis**: Detailed firmware analysis without extraction
+- **CLI Interface**: Command-line interface
+- **QEMU Emulation**: Dynamic analysis and rehosting with QEMU virtual machines
+- **Dynamic Fuzzing**: Real-time fuzzing during firmware execution
+- **Crash Detection**: Automatic crash detection and analysis
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 firmaforge/
@@ -26,9 +29,14 @@ firmaforge/
 │   ├── modifier.py         # File modification operations
 │   ├── repacker.py         # Filesystem repacking
 │   ├── builder.py          # Advanced firmware building
-│   └── fuzzer.py           # Fuzzing capabilities
-├── demos/                   # Demonstration scripts and results
+│   ├── fuzzer.py           # Fuzzing capabilities
+│   └── emulator/           # QEMU emulation and rehosting
+│       ├── __init__.py
+│       ├── qemu_runner.py  # QEMU process management
+│       └── cli.py          # Emulation CLI commands
+├── demo/                    # Demonstration scripts and results
 │   ├── demo_complete_pipeline.py    # ⭐ Main 8-step pipeline demo
+│   ├── demo_qemu_integration.py     # QEMU emulation demo
 │   ├── demo_fuzzing.py             # Fuzzing capabilities demo
 │   ├── demo.py                     # Basic functionality demo
 │   ├── demo_firmware_fs/           # Mock embedded Linux filesystem
@@ -46,25 +54,34 @@ firmaforge/
 │   ├── test_builder.py
 │   └── test_fuzzer.py
 ├── docs/                    # Documentation
+├── QEMU_INTEGRATION.md     # QEMU integration documentation
 ├── ffenv.yml               # Conda environment
 ├── setup.py
 └── README.md
 ```
 
-## 🛠️ Installation
+## Installation
 
 ### Prerequisites
 
-Install the required extraction tools:
+Install the required extraction tools and QEMU:
 
 **macOS:**
 ```bash
+# Extraction tools
 brew install squashfs-tools jefferson p7zip e2fsprogs cramfsprogs ubi_reader
+
+# QEMU for emulation
+brew install qemu
 ```
 
 **Ubuntu/Debian:**
 ```bash
+# Extraction tools
 sudo apt install squashfs-tools jefferson p7zip-full e2fsprogs cramfsprogs ubi-utils
+
+# QEMU for emulation
+sudo apt install qemu-system qemu-system-arm qemu-system-mips qemu-system-x86
 ```
 
 ### Install FirmaForge
@@ -83,7 +100,7 @@ conda activate ffenv
 pip install -e .
 ```
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Complete Pipeline Demo
 ```bash
@@ -96,17 +113,20 @@ python demos/demo_complete_pipeline.py
 
 ### Individual Capability Demos
 ```bash
+# QEMU emulation capabilities
+python demo/demo_qemu_integration.py
+
 # Fuzzing capabilities
-python demos/demo_fuzzing.py
+python demo/demo_fuzzing.py
 
 # Extraction and analysis
-python demos/demo_extraction_analysis.py
+python demo/demo.py
 
-# File modification workflow
-python demos/demo_complete_workflow.py
+# Complete pipeline workflow
+python demo/demo_complete_pipeline.py
 ```
 
-## 📖 Usage
+## Usage
 
 ### Extract Firmware
 
@@ -215,6 +235,28 @@ firmaforge metadata original_firmware.bin
 firmaforge containers
 ```
 
+### QEMU Emulation & Dynamic Analysis
+
+```bash
+# Activate the conda environment first
+conda activate ffenv
+
+# Analyze firmware for emulation compatibility
+firmaforge emulator analyze firmware.bin
+
+# Emulate firmware with QEMU
+firmaforge emulator emulate firmware.bin --architecture arm --memory 512M
+
+# Fuzz firmware during emulation
+firmaforge emulator fuzz firmware.bin output_dir --iterations 50 --strategy random
+
+# List supported QEMU architectures
+firmaforge emulator architectures
+
+# Emulate with custom QEMU options
+firmaforge emulator emulate firmware.bin --qemu-args "-netdev user,id=net0 -device rtl8139,netdev=net0"
+```
+
 ### Check Tools
 
 ```bash
@@ -225,32 +267,34 @@ conda activate ffenv
 firmaforge tools
 ```
 
-## 🔧 Complete 8-Step Pipeline
+## Complete Pipeline
 
-FirmaForge implements a comprehensive 8-step pipeline for firmware security analysis:
+FirmaForge implements an 8-step pipeline for firmware security analysis:
 
-1. **🔍 Firmware Detection & Analysis** - Identify filesystem types and container formats
-2. **📁 Filesystem Extraction** - Extract embedded Linux filesystems
-3. **🔍 Detailed Filesystem Analysis** - Analyze file types, permissions, and structure
-4. **✏️ File Modification Operations** - Insert, replace, and remove files
-5. **🔒 Security & Patching** - Apply security hardening measures
-6. **🎯 Fuzzing for Vulnerability Discovery** - Test for crashes and vulnerabilities
-7. **✅ Validation & Testing** - Validate modified filesystems and test fuzzed files
-8. **📦 Repacking & Rebuilding** - Rebuild firmware images in various formats
+1. **Firmware Detection & Analysis** - Identify filesystem types and container formats
+2. **Filesystem Extraction** - Extract embedded Linux filesystems
+3. **Detailed Filesystem Analysis** - Analyze file types, permissions, and structure
+4. **File Modification Operations** - Insert, replace, and remove files
+5. **Security & Patching** - Apply security hardening measures
+6. **Fuzzing for Vulnerability Discovery** - Test for crashes and vulnerabilities
+7. **QEMU Emulation & Dynamic Analysis** - Run firmware in virtual machines for real-time testing
+8. **Repacking & Rebuilding** - Rebuild firmware images in various formats
 
-## 📊 Test Results
+## Test Results
 
-Comprehensive test results are available in `test_pipeline_results/`:
+Test results are available in `test_pipeline_results/`:
 
 - **Test Coverage**: 88.5% overall success rate
 - **Fuzzing Results**: 300+ fuzzed files generated across 4 strategies
 - **Crash Detection**: 4 distinct crash types identified
 - **Validation**: 100% pass rate for filesystem validation
+- **QEMU Integration**: Multi-architecture emulation support (ARM, MIPS, x86, RISC-V)
+- **Dynamic Analysis**: Real-time fuzzing and crash detection during emulation
 - **Integration**: All 8 pipeline steps validated
 
 See `test_pipeline_results/pipeline_test_report.md` for detailed results.
 
-## 🗂️ Supported Filesystems
+## Supported Filesystems
 
 - **SquashFS**: Compressed read-only filesystem (common in routers)
 - **JFFS2**: Journaling Flash File System version 2
@@ -258,14 +302,15 @@ See `test_pipeline_results/pipeline_test_report.md` for detailed results.
 - **CramFS**: Compressed ROM filesystem
 - **UBIFS**: Unsorted Block Image File System
 
-## 📚 Documentation
+## Documentation
 
-- **Demos**: See `demos/README.md` for demonstration scripts
+- **Demos**: See `demo/README.md` for demonstration scripts
 - **Examples**: See `examples/README.md` for sample firmware files
-- **Test Results**: See `test_pipeline_results/README.md` for comprehensive test documentation
-- **API Reference**: See individual module docstrings for detailed API documentation
+- **QEMU Integration**: See `QEMU_INTEGRATION.md` for emulation and rehosting documentation
+- **Test Results**: See `test_pipeline_results/README.md` for test documentation
+- **API Reference**: See individual module docstrings for API documentation
 
-## 🔬 Examples
+## Examples
 
 ### Complete Workflow Example
 
@@ -291,7 +336,11 @@ firmaforge validate router_firmware_extracted
 # 5. Build complete firmware with container support
 firmaforge build router_firmware_extracted modified_firmware.bin --original-firmware router_firmware.bin
 
-# 6. Verify the new firmware
+# 6. Test with QEMU emulation
+firmaforge emulator analyze modified_firmware.bin
+firmaforge emulator fuzz modified_firmware.bin fuzz_output --iterations 20
+
+# 7. Verify the new firmware
 firmaforge analyze modified_firmware.bin
 ```
 
@@ -305,7 +354,7 @@ conda activate ffenv
 firmaforge analyze firmware.bin --format json
 ```
 
-## 🧪 Development
+## Development
 
 ### Running Tests
 
@@ -333,7 +382,7 @@ pytest -v
 5. Update `get_filesystem_info()` and `get_repacking_info()` methods
 6. Add tests in the appropriate test files
 
-## 📈 Roadmap
+## Roadmap
 
 - [x] Firmware detection and analysis
 - [x] Basic extraction functionality
@@ -344,17 +393,21 @@ pytest -v
 - [x] Filesystem validation
 - [x] Comprehensive fuzzing capabilities
 - [x] Complete 8-step pipeline integration
+- [x] QEMU emulation and rehosting
+- [x] Dynamic analysis and crash detection
 - [ ] GUI interface
 - [ ] Batch processing
 - [ ] Advanced filesystem support (UBIFS repacking)
 - [ ] Firmware signing and verification
 - [ ] Machine learning-based vulnerability detection
+- [ ] Advanced QEMU device models
+- [ ] Network protocol fuzzing
 
-## 📄 License
+## License
 
 MIT License
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -362,14 +415,16 @@ MIT License
 4. Add tests
 5. Submit a pull request
 
-## 🎯 Perfect for UROP Applications
+## UROP Applications
 
-FirmaForge is ideal for demonstrating capabilities in:
+FirmaForge demonstrates capabilities in:
 - **Firmware Security Analysis**
 - **Vulnerability Discovery**
 - **Embedded Systems Security**
+- **Dynamic Analysis & Rehosting**
+- **QEMU Emulation**
 - **Python Development**
 - **System Programming**
 - **Security Research**
 
-The comprehensive test suite and documentation make it perfect for academic and research applications.
+The test suite, QEMU integration, and documentation make it suitable for academic and research applications, including projects like MIT Lincoln Laboratory's IGLOO program.

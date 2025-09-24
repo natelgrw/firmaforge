@@ -4,10 +4,10 @@ This directory contains demonstration scripts that showcase FirmaForge's capabil
 
 ## Demo Scripts
 
-### 1. `demo_complete_pipeline.py` ⭐ **MAIN DEMO**
+### 1. `demo_complete_pipeline.py` - Main Demo
 **Complete 8-step integrated pipeline demonstration**
 
-This is the flagship demo that showcases all of FirmaForge's capabilities in one cohesive workflow:
+This demo showcases all of FirmaForge's capabilities in one cohesive workflow:
 
 - **Step 1**: Firmware Detection & Analysis
 - **Step 2**: Filesystem Extraction  
@@ -15,14 +15,30 @@ This is the flagship demo that showcases all of FirmaForge's capabilities in one
 - **Step 4**: File Modification Operations
 - **Step 5**: Security & Patching
 - **Step 6**: Fuzzing for Vulnerability Discovery
-- **Step 7**: Validation & Testing
+- **Step 7**: QEMU Emulation & Dynamic Analysis
 - **Step 8**: Repacking & Rebuilding
 
 **Usage**: `python demo_complete_pipeline.py`
 
 **Best for**: UROP presentations, comprehensive demonstrations, showing complete workflow
 
-### 2. `demo_fuzzing.py`
+### 2. `demo_qemu_integration.py` - QEMU Demo
+**QEMU emulation and dynamic analysis demonstration**
+
+Shows FirmaForge's QEMU integration capabilities:
+
+- Architecture detection and analysis
+- QEMU emulation setup and configuration
+- Dynamic fuzzing during emulation
+- Crash detection and analysis
+- Multi-architecture support (ARM, MIPS, x86, RISC-V)
+- Real-time monitoring and logging
+
+**Usage**: `python demo_qemu_integration.py`
+
+**Best for**: Dynamic analysis demonstrations, rehosting capabilities, IGLOO project alignment
+
+### 3. `demo_fuzzing.py`
 **Fuzzing capabilities demonstration**
 
 Shows FirmaForge's fuzzing capabilities across different strategies:
@@ -37,7 +53,7 @@ Shows FirmaForge's fuzzing capabilities across different strategies:
 
 **Best for**: Security researchers, vulnerability discovery demonstrations
 
-### 3. `demo.py`
+### 4. `demo.py`
 **Basic functionality demonstration**
 
 Simple demonstration of core FirmaForge features:
@@ -98,26 +114,30 @@ pip install -e .
 ### Quick Start
 ```bash
 # Run the main comprehensive demo
-python demos/demo_complete_pipeline.py
+python demo/demo_complete_pipeline.py
+
+# Run QEMU emulation demo
+python demo/demo_qemu_integration.py
 
 # Run specific capability demos
-python demos/demo_fuzzing.py
-python demos/demo.py
+python demo/demo_fuzzing.py
+python demo/demo.py
 
-# Or run from within the demos directory
-cd demos
+# Or run from within the demo directory
+cd demo
 python demo_complete_pipeline.py
+python demo_qemu_integration.py
 python demo_fuzzing.py
 python demo.py
 ```
 
 ### Demo Output
 All demos provide:
-- ✅ Success indicators for completed operations
-- ❌ Error indicators for failed operations
-- 📊 Statistics and metrics
-- 🔍 Detailed analysis results
-- 📋 Summary reports
+- Success indicators for completed operations
+- Error indicators for failed operations
+- Statistics and metrics
+- Detailed analysis results
+- Summary reports
 
 ## Demo Customization
 
@@ -141,8 +161,9 @@ To create a new demo:
 ## Demo Results
 
 Demo results are typically saved to:
-- `demos/test_pipeline_results/` - Fuzzing and test results
-- `demos/test_pipeline_results/fuzz_output_*/` - Individual fuzzing outputs
+- `demo/test_pipeline_results/` - Fuzzing and test results
+- `demo/test_pipeline_results/fuzz_output_*/` - Individual fuzzing outputs
+- `demo/qemu_fuzz_test/` - QEMU emulation and fuzzing results
 - Console output - Real-time progress and results
 
 ## Troubleshooting
