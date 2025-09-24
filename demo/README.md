@@ -1,4 +1,4 @@
-# Demos
+# FirmaForge Demos
 
 This directory contains demonstration scripts that showcase FirmaForge's capabilities across different use cases and scenarios.
 
