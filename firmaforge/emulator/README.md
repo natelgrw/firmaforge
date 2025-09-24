@@ -2,10 +2,6 @@
 
 This module provides QEMU-based emulation and dynamic analysis capabilities for FirmaForge, enabling firmware rehosting and real-time vulnerability discovery.
 
-## Overview
-
-The emulator module provides:
-
 - Automatic firmware architecture detection
 - Virtual hardware creation using QEMU emulation
 - Firmware execution in controlled virtual environments
