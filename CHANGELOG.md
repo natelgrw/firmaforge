@@ -1,6 +1,6 @@
 # Changelog
 
-Version 0.2.0
+Version **0.2.0**
 
 Date Released: 01/15/2025
 
@@ -16,7 +16,7 @@ Date Released: 01/15/2025
 - Enhanced CLI interface with emulator command group
 - Updated installation requirements to include QEMU
 
-Version 0.1.0
+Version **0.1.0**
 
 Date Released: 01/01/2025
 
