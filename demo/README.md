@@ -1,8 +1,6 @@
-# FirmaForge Demos
+# Demos
 
 This directory contains demonstration scripts that showcase FirmaForge's capabilities across different use cases and scenarios.
-
-## 📕 Demo Scripts
 
 ### 1. `demo_complete_pipeline.py` - Main Demo
 **Complete 8-step integrated pipeline demonstration**
