@@ -1,0 +1,59 @@
+{
+  "firmware_file": "openwrt-24.10.4-apm821xx-nand-meraki_mr24-squashfs-sysupgrade.bin",
+  "extracted_directory": "/workspace/results/openwrt-24.10.4-apm821xx-nand-meraki_mr24-squashfs-sysupgrade",
+  "file_info": {
+    "size": 7373093,
+    "file_type": "POSIX tar archive (GNU)"
+  },
+  "encryption_check": {
+    "possibly_encrypted": false,
+    "entropy": 1.16
+  },
+  "architecture": {
+    "detected": [
+      "PowerPC"
+    ],
+    "confidence": "high",
+    "method": "DTB_compatible_string"
+  },
+  "endianness": {
+    "detected": [
+      "big"
+    ],
+    "confidence": "high"
+  },
+  "container_formats": [],
+  "filesystem_types": [
+    {
+      "type": "TAR",
+      "offset": 257,
+      "signature": "7573746172",
+      "method": "magic_signature"
+    },
+    {
+      "type": "ext2/3/4",
+      "offset": 80966,
+      "signature": "53ef",
+      "method": "magic_signature"
+    },
+    {
+      "type": "SquashFS",
+      "offset": 3232768,
+      "signature": "68737173",
+      "method": "magic_signature"
+    }
+  ],
+  "bootloader_segments": [
+    {
+      "type": "CFE",
+      "method": "strings_analysis"
+    }
+  ],
+  "compression": [],
+  "binwalk_analysis": {
+    "success": true,
+    "summary": "\nDECIMAL       HEXADECIMAL     DESCRIPTION\n--------------------------------------------------------------------------------\n0             0x0             POSIX tar archive (GNU), owner user name: \"de-mr24/\"\n\n",
+    "key_findings": [],
+    "total_lines": 6
+  }
+}
