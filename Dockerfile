@@ -1,12 +1,3 @@
-# ==========================================
-# Dockerfile
-# Author: @natelgrw
-# Last Edited: 11/30/2025
-#
-# A Dockerfile that builds a Docker container
-# for FirmaForge.
-# ==========================================
-
 # based on Ubuntu 22.04 for maximum compatibility
 FROM ubuntu:22.04
 
