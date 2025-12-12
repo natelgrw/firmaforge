@@ -12,6 +12,7 @@ from typing import Dict, Any, Optional
 from pathlib import Path
 from .detector import FirmwareDetector
 from .extractor import FirmwareExtractor
+from . import static_analyzer
 
 
 def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extract_first: bool = True, results_dir: Optional[str] = None) -> Dict[str, Any]:
@@ -30,6 +31,11 @@ def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extr
     firmware_path_obj = Path(firmware_path)
     firmware_name = firmware_path_obj.stem
     
+    # filter for OpenWRT
+    if "openwrt" not in firmware_name.lower():
+        print(f"Skipping {firmware_name}: Not OpenWRT firmware.")
+        return {}
+    
     # determine results directory
     if results_dir is None:
         results_dir = firmware_path_obj.parent / "results"
@@ -38,13 +44,12 @@ def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extr
     
     results_dir.mkdir(parents=True, exist_ok=True)
     
-    # create firmware-specific directory
     firmware_result_dir = results_dir / firmware_name
     firmware_result_dir.mkdir(parents=True, exist_ok=True)
     
     extracted_dir = None
     
-    # 1: extract firmware if requested
+    # extract firmware if requested
     if extract_first:
         try:
             extractor = FirmwareExtractor(firmware_path, str(firmware_result_dir))
@@ -58,16 +63,16 @@ def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extr
         if raw_extracts_dir.exists() and (raw_extracts_dir / "kernel").exists() or (raw_extracts_dir / "rootfs").exists():
             extracted_dir = str(firmware_result_dir)
     
-    # 2: analyze with extracted files if available
+    # analyze with extracted files if available
     detector = FirmwareDetector(firmware_path, extracted_dir)
     results = detector.detect_all()
     
-    # 3: create concise summary structure
+    # create concise summary structure
     file_info = results.get('file_info', {})
     arch_results = results.get('architecture', {})
     
     summary = {
-        'firmware_file': firmware_path_obj.name,  # Just filename, not full path
+        'firmware_file': firmware_path_obj.name,
         'extracted_directory': str(extracted_dir) if extracted_dir else None,
         'file_info': {
             'size': file_info.get('size', 0),
@@ -87,17 +92,12 @@ def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extr
             'confidence': results.get('endianness', {}).get('confidence', 'low'),
         },
         'container_formats': results.get('container_formats', []),
-        'filesystem_types': results.get('filesystem_types', []),  # Already deduplicated in detector
-        'bootloader_segments': results.get('bootloader_segments', []),
-        'compression': results.get('compression', []),
-        'binwalk_analysis': results.get('binwalk_analysis', {}),
+        'filesystem_types': results.get('filesystem_types', []),
     }
     
-    # determine output path to save JSON in firmware result directory
     if output_path is None:
         output_path = str(firmware_result_dir / f"{firmware_name}_analysis.json")
     
-    # ensure directory exists
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     
     # save to JSON file
@@ -108,6 +108,13 @@ def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extr
         print(f"ERROR: Failed to save JSON to {output_path}: {e}")
         import traceback
         traceback.print_exc()
+    
+    # static analysis
+    if extracted_dir:
+        print(f"Running static analysis on {extracted_dir}...")
+        static_analyzer.analyze_users(str(firmware_result_dir), output_path)
+        with open(output_path, 'r') as f:
+            summary = json.load(f)
     
     return summary
 

@@ -9,7 +9,7 @@ firmware (OpenWrt, Netgear, etc.)
 
 The result is a streamlined workflow for firmware security research.
 
-**Current Version: 1.0.0**
+**Current Version: 1.0.1**
 
 ## 📖 Installation & Usage
 

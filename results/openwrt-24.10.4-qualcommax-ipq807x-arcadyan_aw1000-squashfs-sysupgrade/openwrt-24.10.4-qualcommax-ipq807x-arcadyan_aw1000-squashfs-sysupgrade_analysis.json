@@ -1,0 +1,108 @@
+{
+  "firmware_file": "openwrt-24.10.4-qualcommax-ipq807x-arcadyan_aw1000-squashfs-sysupgrade.bin",
+  "extracted_directory": "/workspace/results/openwrt-24.10.4-qualcommax-ipq807x-arcadyan_aw1000-squashfs-sysupgrade",
+  "file_info": {
+    "size": 12820786,
+    "file_type": "POSIX tar archive (GNU)"
+  },
+  "encryption_check": {
+    "possibly_encrypted": false,
+    "entropy": 1.31
+  },
+  "architecture": {
+    "detected": [
+      "MIPS"
+    ],
+    "confidence": "high",
+    "method": "DTB_compatible_string"
+  },
+  "endianness": {
+    "detected": [
+      "little"
+    ],
+    "confidence": "high"
+  },
+  "container_formats": [],
+  "filesystem_types": [
+    {
+      "type": "TAR",
+      "offset": 257,
+      "signature": "7573746172",
+      "method": "magic_signature"
+    },
+    {
+      "type": "ext2/3/4",
+      "offset": 45277,
+      "signature": "53ef",
+      "method": "magic_signature"
+    },
+    {
+      "type": "SquashFS",
+      "offset": 5190656,
+      "signature": "68737173",
+      "method": "magic_signature"
+    }
+  ],
+  "static_analysis": {
+    "total_users": 9,
+    "login_capable_users": [
+      "root"
+    ],
+    "users": [
+      {
+        "username": "root",
+        "uid": 0,
+        "shell": "/bin/ash",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "daemon",
+        "uid": 1,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "ftp",
+        "uid": 55,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "network",
+        "uid": 101,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "nobody",
+        "uid": 65534,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "ntp",
+        "uid": 123,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "dnsmasq",
+        "uid": 453,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "logd",
+        "uid": 514,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "ubus",
+        "uid": 81,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      }
+    ]
+  }
+}

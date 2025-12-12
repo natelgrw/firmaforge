@@ -40,22 +40,7 @@ for firmware in demo_firmware/*; do
             -v "$(pwd):/workspace" \
             -w /workspace \
             firmaforge:latest \
-            python3 -c "
-from firmaforge.summarize_results import analyze_firmware
-from pathlib import Path
-import sys
-
-firmware_path = '/workspace/$firmware'
-output_path = '/workspace/results/$firmware_basename/${firmware_basename}_analysis.json'
-
-try:
-    results = analyze_firmware(firmware_path, output_path, extract_first=True, results_dir='/workspace/results')
-except Exception as e:
-    print(f'Error: {e}')
-    import traceback
-    traceback.print_exc()
-    sys.exit(1)
-"
+            python3 -c "from firmaforge import summarize_results; summarize_results.analyze_firmware('/workspace/$firmware', results_dir='/workspace/results')"
         
         echo ""
     fi

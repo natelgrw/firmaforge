@@ -43,17 +43,66 @@
       "method": "magic_signature"
     }
   ],
-  "bootloader_segments": [
-    {
-      "type": "CFE",
-      "method": "strings_analysis"
-    }
-  ],
-  "compression": [],
-  "binwalk_analysis": {
-    "success": true,
-    "summary": "\nDECIMAL       HEXADECIMAL     DESCRIPTION\n--------------------------------------------------------------------------------\n0             0x0             POSIX tar archive (GNU), owner user name: \"de-mr24/\"\n\n",
-    "key_findings": [],
-    "total_lines": 6
+  "static_analysis": {
+    "total_users": 9,
+    "login_capable_users": [
+      "root"
+    ],
+    "users": [
+      {
+        "username": "root",
+        "uid": 0,
+        "shell": "/bin/ash",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "daemon",
+        "uid": 1,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "ftp",
+        "uid": 55,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "network",
+        "uid": 101,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "nobody",
+        "uid": 65534,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "ntp",
+        "uid": 123,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "dnsmasq",
+        "uid": 453,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "logd",
+        "uid": 514,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      },
+      {
+        "username": "ubus",
+        "uid": 81,
+        "shell": "/bin/false",
+        "has_valid_password_hash": false
+      }
+    ]
   }
 }
