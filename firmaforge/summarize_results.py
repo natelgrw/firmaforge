@@ -112,7 +112,7 @@ def analyze_firmware(firmware_path: str, output_path: Optional[str] = None, extr
     # static analysis
     if extracted_dir:
         print(f"Running static analysis on {extracted_dir}...")
-        static_analyzer.analyze_users(str(firmware_result_dir), output_path)
+        static_analyzer.analyze_static(str(firmware_result_dir), output_path)
         with open(output_path, 'r') as f:
             summary = json.load(f)
     

@@ -1,3 +1,9 @@
+Version: **1.1.0**
+
+Date Released: **12/21/2025**
+
+- ELF analysis, secret detection, and web scanning support
+
 Version: **1.0.1**
 
 Date Released: **12/12/2025**
